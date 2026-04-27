@@ -10,10 +10,14 @@ import com.library.openai.dtos.Tool;
 import com.library.openai.dtos.ToolExecArgs;
 import com.library.openai.services.ToolProvider;
 
+import tools.jackson.databind.ObjectMapper;
+
 public class WeatherToolProvider implements ToolProvider {
 
 	private String toolName = "GetWeather";
 
+	private ObjectMapper objMapper;
+	
 	@Override
 	public List<Tool> getTools() {
 
@@ -28,12 +32,15 @@ public class WeatherToolProvider implements ToolProvider {
 
 	@Override
 	public String execTool(ToolExecArgs tool) {
+		objMapper = new ObjectMapper();
+		@SuppressWarnings("unchecked")
+		Map<String, String> properties = objMapper.readValue(tool.getArgsTool(), Map.class);
 		switch (tool.getToolName()){
 		case "GetWeather": {
 			int min = -10;
 			int max = 35;
 			float temp = (int) (Math.random() * (max - min + 1)) + min;
-			String location = tool.getArgsTool().get("location").toString();
+			String location = properties.get("location");
 			return String.format("La temperatura en %s es de %f", location, temp);
 		}
 		default:

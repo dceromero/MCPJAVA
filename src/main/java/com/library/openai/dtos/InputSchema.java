@@ -1,5 +1,6 @@
 package com.library.openai.dtos;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +10,12 @@ import lombok.NonNull;
 
 @Builder
 @Data
-public class InputSchema {
+public class InputSchema implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Builder.Default
 	private String type = "object";
